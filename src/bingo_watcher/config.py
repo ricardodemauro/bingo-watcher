@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import Any
 
 import yaml
 from dotenv import dotenv_values
@@ -31,6 +30,7 @@ class Settings(BaseModel):
     multiplier: float
     evaluation_interval_seconds: int = 300
     log_level: str = "INFO"
+    database_path: Path = Path("bingo_watcher.sqlite3")
 
     alpaca_api_key: str
     alpaca_secret_key: str

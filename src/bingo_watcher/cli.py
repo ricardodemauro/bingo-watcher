@@ -5,6 +5,7 @@ import sys
 
 from bingo_watcher.config import ConfigError, load_settings
 from bingo_watcher.logging_setup import configure_logging
+from bingo_watcher.storage import Storage
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,9 @@ def main() -> None:
         len(settings.watchlist),
         settings.multiplier,
     )
+
+    with Storage(settings.database_path):
+        logger.info("database ready at %s", settings.database_path)
 
 
 if __name__ == "__main__":

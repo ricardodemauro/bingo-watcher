@@ -19,3 +19,6 @@ evaluation_interval_seconds: 300
 
 # One of DEBUG, INFO, WARNING, ERROR, CRITICAL.
 log_level: INFO
+
+# Where the SQLite database (trade-count snapshots, alert history) lives.
+database_path: bingo_watcher.sqlite3
