@@ -72,3 +72,42 @@ def test_once_next_open_passes_it_becomes_current():
     now = datetime(2026, 8, 3, 14, 0, tzinfo=timezone.utc)
 
     assert calendar.current_trading_day(now) == monday
+
+
+def test_is_market_open_during_session():
+    today = date(2026, 8, 3)
+    calendar = _calendar_with(_session(today, "09:30", "16:00"))
+
+    now = datetime(2026, 8, 3, 14, 0, tzinfo=timezone.utc)  # 10:00 ET
+
+    assert calendar.is_market_open(now) is True
+
+
+def test_is_market_open_false_before_first_session():
+    calendar = _calendar_with()
+
+    now = datetime(2026, 8, 3, 5, 0, tzinfo=timezone.utc)
+
+    assert calendar.is_market_open(now) is False
+
+
+def test_is_market_open_false_after_close():
+    today = date(2026, 8, 3)
+    calendar = _calendar_with(_session(today, "09:30", "16:00"))
+
+    now = datetime(2026, 8, 3, 22, 0, tzinfo=timezone.utc)  # 18:00 ET
+
+    assert calendar.is_market_open(now) is False
+
+
+def test_is_market_open_false_over_a_weekend():
+    friday = date(2026, 7, 31)
+    monday = date(2026, 8, 3)
+    calendar = _calendar_with(
+        _session(friday, "09:30", "16:00"),
+        _session(monday, "09:30", "16:00"),
+    )
+
+    now = datetime(2026, 8, 1, 14, 0, tzinfo=timezone.utc)  # Saturday
+
+    assert calendar.is_market_open(now) is False
