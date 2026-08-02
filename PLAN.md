@@ -22,7 +22,7 @@ them rather than re-litigating them mid-milestone.
 | Market data | Alpaca **paper** account, **IEX** feed, **raw trade tick** stream |
 | Config | YAML file for settings + `.env` for secrets, loaded via `pydantic-settings` |
 | Storage | SQLite via the stdlib `sqlite3` module (writes are infrequent — every 5 min — so a sync driver is acceptable) |
-| Telegram | Direct HTTPS calls to the Bot API via `httpx` (no bot framework — the app only *sends*) |
+| Telegram | `python-telegram-bot` — listed on Telegram's official [bot libraries page](https://core.telegram.org/bots/samples) and async-native since v20, so it fits the asyncio runtime directly. No raw Bot API HTTP calls |
 | Secrets | Never committed. `.env` is gitignored; `.env.example` is committed |
 
 **Verification approach**: each milestone lists a concrete "Done when"
@@ -186,12 +186,16 @@ threshold logs an alert exactly once, not on every cycle.
 **Goal**: The complete app — alerts actually reach the user's phone.
 
 **Scope**
-- Send a Telegram message via the Bot API for each alert produced by M6.
+- Send a Telegram message for each alert produced by M6, using
+  `python-telegram-bot`'s `Bot.send_message`. Use the `Bot` class only —
+  the app never *receives* updates, so no `Application`, updater, polling,
+  or handler registration is needed.
 - Message content: ticker, its trade count, the watchlist median, the
   threshold, and the time — enough to act on without opening the app.
 - Delivery failures are logged and swallowed, never fatal: a Telegram
   outage must not take down the watcher or lose the alert's DB record.
-  Retry a small number of times with backoff before giving up.
+  Catch `telegram.error.TelegramError` and retry a small number of times
+  with backoff before giving up.
 - Wire the full pipeline in the CLI: config → storage → counters →
   stream → evaluator → notifier, running the stream and the evaluation
   loop concurrently under `asyncio`.
