@@ -60,6 +60,7 @@ source = { editable = "." }
 dependencies = [
     { name = "alpaca-py" },
     { name = "pydantic-settings" },
+    { name = "python-dotenv" },
     { name = "python-telegram-bot" },
     { name = "pyyaml" },
 ]
@@ -68,6 +69,7 @@ dependencies = [
 requires-dist = [
     { name = "alpaca-py", specifier = ">=0.33" },
     { name = "pydantic-settings", specifier = ">=2.6" },
+    { name = "python-dotenv", specifier = ">=1.2" },
     { name = "python-telegram-bot", specifier = ">=21.0" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]

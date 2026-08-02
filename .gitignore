@@ -157,6 +157,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# bingo-watcher local config and data (see config.example.yaml)
+config.yaml
+*.sqlite3
+
 # Spyder project settings
 .spyderproject
 .spyproject
