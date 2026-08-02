@@ -1,0 +1,24 @@
+# Copy this file to config.yaml and edit it. config.yaml is gitignored —
+# it's local to your machine, unlike this example.
+
+# Tickers to watch. Case-insensitive; duplicates are collapsed automatically.
+watchlist:
+  - AAPL
+  - MSFT
+  - TSLA
+
+# How far above the cross-ticker median trade count a ticker must be to
+# fire an alert (threshold = median * multiplier). No default is right for
+# everyone — this needs tuning against real observed data once the app is
+# running. Start here and adjust.
+multiplier: 1.5
+
+# How often (in seconds) to recompute the median and check for alerts.
+# 300 = 5 minutes.
+evaluation_interval_seconds: 300
+
+# One of DEBUG, INFO, WARNING, ERROR, CRITICAL.
+log_level: INFO
+
+# Where the SQLite database (trade-count snapshots, alert history) lives.
+database_path: bingo_watcher.sqlite3
