@@ -89,7 +89,38 @@ the Alpaca connection drops. Stop it with `Ctrl-C` - it shuts down
 cleanly, disconnecting the stream and closing the database before
 exiting.
 
-## 6. Reading alerts
+## 6. Deploy with Docker
+
+Once `config.yaml` and `.env` exist (step 4), you can run bingo-watcher as
+a container instead:
+
+```bash
+docker compose up -d --build
+```
+
+This builds the image, then runs it detached with:
+
+- `config.yaml` and `.env` bind-mounted read-only from the repo directory
+- `./data` bind-mounted read-write, holding the SQLite database
+  (`database_path: data/bingo_watcher.sqlite3` in `config.example.yaml`
+  points here by default - the directory is created automatically)
+- `restart: unless-stopped`, so it comes back up after a host reboot or
+  crash
+- a 30s stop grace period, giving the app's signal handler time to stop
+  the stream and evaluator cleanly
+
+Useful commands:
+
+```bash
+docker compose logs -f      # follow logs
+docker compose down         # stop and remove the container (SIGTERM, graceful)
+docker compose up -d --build  # rebuild after pulling code changes
+```
+
+`docker compose down` (or `docker stop`) sends `SIGTERM`, which the app
+handles the same way as `Ctrl-C` locally - no traceback, no abrupt kill.
+
+## 7. Reading alerts
 
 A Telegram message looks like:
 

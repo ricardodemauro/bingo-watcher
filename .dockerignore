@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+tests/
+
+.env
+config.yaml
+data/
+*.sqlite3
+
+PLAN.md
+SPEC.md

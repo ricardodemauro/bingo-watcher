@@ -61,6 +61,7 @@ class Storage:
     """SQLite-backed storage. Creates its schema on first use."""
 
     def __init__(self, db_path: Path) -> None:
+        db_path.parent.mkdir(parents=True, exist_ok=True)
         self._conn = sqlite3.connect(db_path)
         self._conn.execute("PRAGMA foreign_keys = ON")
         with self._conn:
