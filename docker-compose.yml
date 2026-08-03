@@ -1,0 +1,10 @@
+services:
+  bingo-watcher:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./.env:/app/.env:ro
+      - ./data:/app/data
+    stop_signal: SIGTERM
+    stop_grace_period: 30s

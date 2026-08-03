@@ -30,7 +30,7 @@ class Settings(BaseModel):
     multiplier: float
     evaluation_interval_seconds: int = 300
     log_level: str = "INFO"
-    database_path: Path = Path("bingo_watcher.sqlite3")
+    database_path: Path = Path("data/bingo_watcher.sqlite3")
 
     alpaca_api_key: str
     alpaca_secret_key: str
